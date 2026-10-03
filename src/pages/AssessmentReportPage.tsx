@@ -55,7 +55,9 @@ export const AssessmentReportPage: React.FC = () => {
   const candidateName = worker?.fullName || 'Ravi Kumar';
   const tradeName = worker?.trade || 'Assistant Electrician';
   const finalDecisionText = finalResult?.finalDecision || 'Approved';
-  const finalScoreValue = finalResult?.finalScore || 87.4;
+  const selfDeclScoreVal = selfDecl?.score ?? 88;
+  const practicalScoreVal = assessment?.totalScore ?? 85;
+  const finalScoreValue = finalResult?.finalScore ?? Number((0.2 * selfDeclScoreVal + 0.8 * practicalScoreVal).toFixed(1));
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">

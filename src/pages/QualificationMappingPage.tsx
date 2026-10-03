@@ -125,19 +125,28 @@ export const QualificationMappingPage: React.FC = () => {
         {/* Action Button Card */}
         <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
           <div>
-            <h4 className="font-bold text-base text-white">Next Step: Practical Evaluation</h4>
+            <h4 className="font-bold text-base text-white">Next Step Options</h4>
             <p className="text-xs text-slate-300 mt-1">
-              Demonstrate switchboard wiring to the assessor.
+              Save your qualification mapping or proceed to live practical task evaluation.
             </p>
           </div>
 
-          <button
-            onClick={() => navigate(`/assessor/assessment/${activeWorker?.id || 'w-101'}`)}
-            className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition flex items-center justify-center gap-2"
-          >
-            <span>Start Practical Assessment</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={() => navigate(`/assessor/assessment/${activeWorker?.id || 'w-101'}`)}
+              className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition flex items-center justify-center gap-2"
+            >
+              <span>Start Practical Assessment</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => navigate('/worker/dashboard')}
+              className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs transition text-center"
+            >
+              Back to Worker Dashboard
+            </button>
+          </div>
         </div>
       </div>
 
