@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
+import { PWAProvider } from './context/PWAContext';
+import { AppShell } from './components/AppShell';
 import { seedDatabaseIfEmpty } from './db/seedData';
 
 // Pages
@@ -22,20 +22,6 @@ import { OfflineSyncPage } from './pages/OfflineSyncPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AssessmentReportPage } from './pages/AssessmentReportPage';
 
-// Route Guard Component
-const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({
-  children,
-  allowedRoles
-}) => {
-  const { role } = useAuth();
-
-  if (allowedRoles && !allowedRoles.includes(role)) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
-
 export function App() {
   useEffect(() => {
     seedDatabaseIfEmpty();
@@ -45,11 +31,9 @@ export function App() {
     <LanguageProvider>
       <AuthProvider>
         <ToastProvider>
-          <Router>
-            <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900 selection:bg-blue-600 selection:text-white">
-              <Navbar />
-
-              <main className="flex-1">
+          <PWAProvider>
+            <Router>
+              <AppShell>
                 <Routes>
                   {/* Public Pages */}
                   <Route path="/" element={<LandingPage />} />
@@ -75,15 +59,14 @@ export function App() {
                   {/* Fallback */}
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
-              </main>
-
-              <Footer />
-            </div>
-          </Router>
+              </AppShell>
+            </Router>
+          </PWAProvider>
         </ToastProvider>
       </AuthProvider>
     </LanguageProvider>
   );
 }
+
 
 export default App;

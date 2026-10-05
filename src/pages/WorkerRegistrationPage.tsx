@@ -15,7 +15,8 @@ import {
   ArrowRight, 
   ArrowLeft,
   Zap,
-  Globe
+  Globe,
+  ShieldCheck
 } from 'lucide-react';
 
 export const WorkerRegistrationPage: React.FC = () => {
@@ -60,13 +61,13 @@ export const WorkerRegistrationPage: React.FC = () => {
       fullName: formData.fullName || 'Draft Worker',
       mobileNumber: formData.mobileNumber || '9999999999',
       age: formData.age || 25,
-      gender: formData.gender as any || 'Male',
+      gender: (formData.gender as any) || 'Male',
       district: formData.district || 'Visakhapatnam',
       state: formData.state || 'Andhra Pradesh',
-      preferredLanguage: formData.preferredLanguage as any || 'Telugu',
+      preferredLanguage: (formData.preferredLanguage as any) || 'Telugu',
       trade: 'Assistant Electrician',
       yearsOfExperience: formData.yearsOfExperience || 3,
-      workType: formData.workType as any || 'Independent',
+      workType: (formData.workType as any) || 'Independent',
       consentGiven: !!formData.consentGiven,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -74,7 +75,7 @@ export const WorkerRegistrationPage: React.FC = () => {
 
     await db.workers.put(newWorker);
     await loginAsDemoWorker(workerId);
-    showToast('Offline Draft Saved', 'Worker profile stored in IndexedDB.', 'info');
+    showToast('Offline Draft Saved', 'Worker profile stored in IndexedDB local database.', 'info');
   };
 
   const handleFinalSubmit = async (e: React.FormEvent) => {
@@ -109,19 +110,19 @@ export const WorkerRegistrationPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-3xl mx-auto px-4 py-6 space-y-8">
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-extrabold text-slate-900">
           Worker RPL Skill Registration
         </h1>
-        <p className="text-slate-600 text-sm">
-          Recognizing prior electrical work experience for formal assessment.
+        <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">
+          Recognizing prior electrical work experience for formal NSQF Level 3 certification.
         </p>
       </div>
 
       {/* Progress Indicator Steps */}
-      <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         {[
           { num: 1, label: 'Personal Details' },
           { num: 2, label: 'Experience & Trade' },
@@ -131,17 +132,17 @@ export const WorkerRegistrationPage: React.FC = () => {
             <div
               className={`w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs transition ${
                 step === item.num
-                  ? 'bg-blue-600 text-white shadow'
+                  ? 'bg-[#12355B] text-white shadow-xs'
                   : step > item.num
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-[#0F766E] text-white'
                   : 'bg-slate-100 text-slate-500'
               }`}
             >
               {item.num}
             </div>
             <span
-              className={`text-xs font-semibold hidden sm:inline-block ${
-                step === item.num ? 'text-blue-600' : 'text-slate-500'
+              className={`text-xs font-bold hidden sm:inline-block ${
+                step === item.num ? 'text-[#12355B]' : 'text-slate-500'
               }`}
             >
               {item.label}
@@ -151,50 +152,53 @@ export const WorkerRegistrationPage: React.FC = () => {
       </div>
 
       {/* Form Steps */}
-      <form onSubmit={handleFinalSubmit} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+      <form onSubmit={handleFinalSubmit} className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
         {step === 1 && (
           <div className="space-y-4 animate-fade-in">
-            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-              <User className="w-5 h-5 text-blue-600" />
-              <span>Step 1: Personal & Location Details</span>
+            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+              <User className="w-5 h-5 text-[#12355B]" />
+              <span>Step 1: Personal Information & Location</span>
             </h3>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+              <label htmlFor="reg-fullname" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                 Full Name *
               </label>
               <input
+                id="reg-fullname"
                 type="text"
                 name="fullName"
                 required
                 value={formData.fullName || ''}
                 onChange={handleChange}
                 placeholder="e.g. Ramesh Naidu"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-mobile" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Mobile Number *
                 </label>
                 <input
+                  id="reg-mobile"
                   type="tel"
                   name="mobileNumber"
                   required
                   value={formData.mobileNumber || ''}
                   onChange={handleChange}
                   placeholder="10 digit mobile number"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-age" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Age *
                 </label>
                 <input
+                  id="reg-age"
                   type="number"
                   name="age"
                   min={18}
@@ -202,21 +206,22 @@ export const WorkerRegistrationPage: React.FC = () => {
                   required
                   value={formData.age || ''}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-gender" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Gender *
                 </label>
                 <select
+                  id="reg-gender"
                   name="gender"
                   value={formData.gender || 'Male'}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium bg-white text-slate-900"
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -225,14 +230,15 @@ export const WorkerRegistrationPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-lang" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Preferred Language *
                 </label>
                 <select
+                  id="reg-lang"
                   name="preferredLanguage"
                   value={formData.preferredLanguage || 'Telugu'}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium bg-white text-slate-900"
                 >
                   <option value="Telugu">Telugu (తెలుగు)</option>
                   <option value="English">English</option>
@@ -243,32 +249,34 @@ export const WorkerRegistrationPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-district" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   District *
                 </label>
                 <input
+                  id="reg-district"
                   type="text"
                   name="district"
                   required
                   value={formData.district || ''}
                   onChange={handleChange}
                   placeholder="e.g. Visakhapatnam"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-state" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   State *
                 </label>
                 <input
+                  id="reg-state"
                   type="text"
                   name="state"
                   required
                   value={formData.state || ''}
                   onChange={handleChange}
                   placeholder="e.g. Andhra Pradesh"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
                 />
               </div>
             </div>
@@ -277,39 +285,41 @@ export const WorkerRegistrationPage: React.FC = () => {
 
         {step === 2 && (
           <div className="space-y-4 animate-fade-in">
-            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-blue-600" />
+            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Briefcase className="w-5 h-5 text-[#12355B]" />
               <span>Step 2: Work Experience & Trade Selection</span>
             </h3>
 
-            <div className="p-4 rounded-xl bg-slate-900 text-white flex items-start gap-3">
+            <div className="p-4 rounded-2xl bg-[#12355B] text-white flex items-start gap-3 shadow-xs">
               <Zap className="w-6 h-6 text-amber-400 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-bold text-sm text-white">MVP Trade Selection</h4>
-                <p className="text-xs text-slate-300 mt-0.5">
-                  Currently supporting <strong>Assistant Electrician (NSQF Level 3)</strong>.
+                <h4 className="font-bold text-sm text-white">Supported Trade Standard</h4>
+                <p className="text-xs text-slate-200 mt-0.5 font-medium">
+                  Currently evaluating candidates for <strong>Assistant Electrician (NSQF Level 3)</strong>.
                 </p>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Selected Trade
+              <label htmlFor="reg-trade" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
+                Selected Trade Standard
               </label>
               <input
+                id="reg-trade"
                 type="text"
                 readOnly
                 value="Assistant Electrician (NSQF Level 3)"
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-700 font-bold text-sm cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-800 font-bold text-sm cursor-not-allowed"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Years of Practical Experience *
+                <label htmlFor="reg-exp" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
+                  Years of Practical Work Experience *
                 </label>
                 <input
+                  id="reg-exp"
                   type="number"
                   name="yearsOfExperience"
                   min={1}
@@ -317,19 +327,20 @@ export const WorkerRegistrationPage: React.FC = () => {
                   required
                   value={formData.yearsOfExperience || ''}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium text-slate-900 bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                <label htmlFor="reg-worktype" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Work Engagement Type *
                 </label>
                 <select
+                  id="reg-worktype"
                   name="workType"
                   value={formData.workType || 'Independent'}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm font-medium bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#12355B] focus:outline-none text-sm font-medium bg-white text-slate-900"
                 >
                   <option value="Independent">Independent Technician</option>
                   <option value="Helper">Helper / Trainee</option>
@@ -343,20 +354,21 @@ export const WorkerRegistrationPage: React.FC = () => {
 
         {step === 3 && (
           <div className="space-y-4 animate-fade-in">
-            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-              <CheckSquare className="w-5 h-5 text-blue-600" />
-              <span>Step 3: Consent for Data & AI Assessment</span>
+            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+              <CheckSquare className="w-5 h-5 text-[#12355B]" />
+              <span>Step 3: Candidate Data & Assessment Consent</span>
             </h3>
 
             <div className="p-5 rounded-2xl bg-blue-50 border border-blue-200 text-slate-800 space-y-3">
-              <h4 className="font-bold text-sm text-blue-900">
-                Informal Worker Consent Statement
+              <h4 className="font-bold text-sm text-[#12355B] flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#12355B]" />
+                Informal Worker Data Protection Statement
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                By ticking the consent box, I agree to store my demographic details, photo/video practical assessment evidence, and voice recordings on SkillSetu RPL for competency evaluation.
+              <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                By selecting the consent checkbox, I agree to save my demographic details, photo/video practical assessment evidence, and audio responses in SkillSetu RPL for competency evaluation.
               </p>
-              <div className="p-3 bg-white rounded-xl border border-blue-200 text-[11px] text-slate-600">
-                <strong>Notice:</strong> Your data is stored locally in IndexedDB and is only shared with authorized human assessors. AI is used solely for evidence guidance and quality scoring.
+              <div className="p-3 bg-white rounded-xl border border-blue-200 text-[11px] text-slate-600 font-medium">
+                <strong>Offline Privacy Notice:</strong> All data is stored locally in browser IndexedDB memory and is shared only with authorized human assessors. AI is used strictly for evidence assistance.
               </div>
             </div>
 
@@ -366,10 +378,10 @@ export const WorkerRegistrationPage: React.FC = () => {
                 name="consentGiven"
                 checked={!!formData.consentGiven}
                 onChange={handleChange}
-                className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 mt-0.5"
+                className="w-5 h-5 rounded text-[#12355B] focus:ring-[#12355B] mt-0.5"
               />
-              <span className="text-xs font-semibold text-slate-900 leading-normal">
-                I give consent for storing my details, voice audio, and practical assessment video/photo evidence.
+              <span className="text-xs font-bold text-slate-900 leading-normal">
+                I give consent for recording my details, voice audio, and practical assessment video/photo evidence.
               </span>
             </label>
           </div>
@@ -380,7 +392,7 @@ export const WorkerRegistrationPage: React.FC = () => {
           <button
             type="button"
             onClick={saveDraftToDb}
-            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
           >
             <Save className="w-4 h-4 text-slate-500" />
             <span>Save Offline Draft</span>
@@ -391,7 +403,7 @@ export const WorkerRegistrationPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setStep(step - 1)}
-                className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-sm hover:bg-slate-50 transition flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -402,7 +414,7 @@ export const WorkerRegistrationPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setStep(step + 1)}
-                className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow transition flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-[#12355B] hover:bg-[#1a4877] text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
@@ -410,7 +422,7 @@ export const WorkerRegistrationPage: React.FC = () => {
             ) : (
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow transition flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-[#0F766E] hover:bg-teal-600 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>Complete Registration</span>
                 <ArrowRight className="w-4 h-4" />

@@ -1,22 +1,19 @@
 {
-  "short_name": "SkillSetu",
-  "name": "SkillSetu RPL - Recognition of Prior Learning",
+  "short_name": "IS Guide AI",
+  "name": "IS Guide AI – Indian Standards Recommendation Engine",
+  "description": "Offline-First Indian Standards recommendation engine and procurement tender specification assistant.",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "scope": "/",
+  "background_color": "#12355B",
+  "theme_color": "#12355B",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "description": "AI-assisted Recognition of Prior Learning assessment platform for informal workers."
+  "orientation": "any"
 }

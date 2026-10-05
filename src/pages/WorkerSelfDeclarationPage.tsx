@@ -15,7 +15,8 @@ import {
   Wrench, 
   ShieldAlert, 
   Zap,
-  Volume2
+  Volume2,
+  Sparkles
 } from 'lucide-react';
 
 interface QuestionItem {
@@ -177,38 +178,38 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 text-white p-6 rounded-3xl shadow-lg border border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-[#12355B] to-[#0f2a4a] text-white p-6 rounded-3xl shadow-md border border-blue-950">
         <div>
-          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
             Assistant Electrician (NSQF Level 3)
           </span>
           <h1 className="text-2xl font-extrabold mt-2 text-white">
             Skill Self-Declaration Questionnaire
           </h1>
-          <p className="text-xs text-slate-300 mt-1">
-            Worker: <strong>{activeWorker?.fullName || 'Ravi Kumar'}</strong> ({activeWorker?.yearsOfExperience || 6} yrs exp)
+          <p className="text-xs text-slate-200 mt-1 font-medium">
+            Candidate: <strong>{activeWorker?.fullName || 'Ravi Kumar'}</strong> ({activeWorker?.yearsOfExperience || 6} yrs practical experience)
           </p>
         </div>
 
         {/* Self Declaration Score Badge */}
-        <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-center min-w-[130px]">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Self-Decl Score</p>
-          <p className="text-3xl font-extrabold text-emerald-400">{currentScore}%</p>
-          <p className="text-[10px] text-emerald-300 font-semibold mt-0.5">Calculated</p>
+        <div className="bg-blue-950/80 p-4 rounded-2xl border border-blue-800 text-center min-w-[140px] shadow-inner">
+          <p className="text-[10px] text-blue-200 font-bold uppercase tracking-wider">Self-Decl Score</p>
+          <p className="text-3xl font-black text-amber-400">{currentScore}%</p>
+          <p className="text-[10px] text-teal-300 font-bold mt-0.5">Automated Score</p>
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+      {/* Progress Bar Card */}
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
         <div className="flex justify-between items-center text-xs font-bold text-slate-700">
           <span>Questionnaire Progress ({answeredCount} of 10 completed)</span>
-          <span className="text-blue-600">{progressPercent}%</span>
+          <span className="text-[#12355B]">{progressPercent}%</span>
         </div>
         <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
           <div
-            className="bg-gradient-to-r from-blue-600 to-emerald-500 h-full transition-all duration-300"
+            className="bg-gradient-to-r from-[#12355B] to-[#0F766E] h-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>
@@ -217,28 +218,27 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
       {/* Questionnaire Cards List */}
       <div className="space-y-6">
         {QUESTIONS.map((q, index) => {
-          const IconComp = q.icon;
           const currentAnswer = answers[q.id];
 
           return (
             <div
               key={q.id}
-              className={`p-6 rounded-2xl border transition ${
+              className={`p-6 rounded-3xl border transition ${
                 currentAnswer
-                  ? 'bg-white border-slate-200 shadow-sm'
+                  ? 'bg-white border-slate-200 shadow-xs'
                   : 'bg-amber-50/50 border-amber-200'
               }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 font-extrabold flex items-center justify-center text-sm shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-[#12355B] font-extrabold flex items-center justify-center text-xs shrink-0">
                     {index + 1}
                   </div>
                   <div>
                     <h3 className="font-bold text-base text-slate-900 leading-snug">
                       {q.title}
                     </h3>
-                    <p className="text-xs text-slate-500 mt-1 font-medium italic">
+                    <p className="text-xs text-slate-600 mt-1 font-semibold italic">
                       {q.teluguTitle}
                     </p>
                   </div>
@@ -249,21 +249,21 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
                   type="button"
                   onClick={() => simulateVoiceRecording(q.id)}
                   disabled={recordingActive && activeQuestionId === q.id}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shrink-0 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#12355B] ${
                     recordingActive && activeQuestionId === q.id
                       ? 'bg-rose-600 text-white animate-pulse'
                       : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300'
                   }`}
-                  title="Answer by speaking in Telugu/English"
+                  title="Answer by speaking in Telugu or English"
                 >
                   {recordingActive && activeQuestionId === q.id ? (
                     <>
                       <MicOff className="w-4 h-4" />
-                      <span>Recording Audio...</span>
+                      <span>Recording Voice...</span>
                     </>
                   ) : (
                     <>
-                      <Mic className="w-4 h-4 text-blue-600" />
+                      <Mic className="w-4 h-4 text-[#12355B]" />
                       <span>Voice Answer</span>
                     </>
                   )}
@@ -284,16 +284,16 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
                       key={opt.key}
                       type="button"
                       onClick={() => handleSelectAnswer(q.id, opt.key as SkillAnswerOption)}
-                      className={`p-3.5 rounded-xl border text-left transition relative ${
+                      className={`p-3.5 rounded-2xl border text-left transition cursor-pointer focus-visible:ring-2 focus-visible:ring-[#12355B] ${
                         isSelected
                           ? opt.color === 'emerald'
-                            ? 'bg-emerald-50 border-emerald-600 ring-2 ring-emerald-600/30 text-emerald-950 font-bold'
+                            ? 'bg-emerald-50 border-[#0F766E] ring-2 ring-[#0F766E]/30 text-teal-950 font-bold'
                             : opt.color === 'blue'
-                            ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-600/30 text-blue-950 font-bold'
+                            ? 'bg-blue-50 border-[#12355B] ring-2 ring-[#12355B]/30 text-blue-950 font-bold'
                             : opt.color === 'amber'
                             ? 'bg-amber-50 border-amber-600 ring-2 ring-amber-600/30 text-amber-950 font-bold'
                             : 'bg-rose-50 border-rose-600 ring-2 ring-rose-600/30 text-rose-950 font-bold'
-                          : 'bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-700'
+                          : 'bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-700 font-medium'
                       }`}
                     >
                       <p className="text-xs font-bold">{opt.label}</p>
@@ -307,15 +307,15 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
         })}
       </div>
 
-      {/* Floating / Bottom Action Controls */}
-      <div className="sticky bottom-4 bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl border border-slate-800 shadow-2xl flex flex-wrap items-center justify-between gap-4">
+      {/* Floating / Bottom Action Bar */}
+      <div className="sticky bottom-4 bg-[#12355B] text-white p-4 rounded-2xl border border-blue-900 shadow-2xl flex flex-wrap items-center justify-between gap-4 no-print">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
-            <CheckCircle2 className="w-5 h-5" />
+          <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-300">
+            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <p className="text-xs text-slate-300">Self-Declaration Score calculated:</p>
-            <p className="text-lg font-extrabold text-white">{currentScore} Marks (100 Max)</p>
+            <p className="text-[11px] text-blue-200 font-medium">Self-Declaration Score:</p>
+            <p className="text-lg font-extrabold text-amber-400">{currentScore} Marks (100 Max)</p>
           </div>
         </div>
 
@@ -323,16 +323,16 @@ export const WorkerSelfDeclarationPage: React.FC = () => {
           <button
             type="button"
             onClick={handleSaveDraft}
-            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-blue-900/80 hover:bg-blue-800 text-blue-100 border border-blue-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
           >
-            <Save className="w-4 h-4 text-slate-400" />
-            <span>Save Offline</span>
+            <Save className="w-4 h-4 text-blue-300" />
+            <span>Save Draft</span>
           </button>
 
           <button
             type="button"
             onClick={handleSaveAndContinue}
-            className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition flex items-center gap-2"
+            className="px-6 py-2.5 rounded-xl bg-[#0F766E] hover:bg-teal-600 text-white font-bold text-xs shadow-md transition flex items-center gap-2 cursor-pointer"
           >
             <span>View Qualification Mapping</span>
             <ArrowRight className="w-4 h-4" />

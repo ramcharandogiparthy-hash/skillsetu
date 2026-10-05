@@ -131,3 +131,83 @@ export interface MappingResult {
     experienceScore: number;
   };
 }
+
+export interface IndianStandard {
+  id: string;
+  isNumber: string;
+  code: string;
+  year: string;
+  title: string;
+  category: string;
+  tags: string[];
+  scope: string;
+  typicalApplications: string[];
+  technicalParameters: string[];
+  testingRequirements: string[];
+  normativeReferences: string[];
+  procurementNotes: string;
+  verificationStatus: 'Verified from database' | 'Requires verification' | 'AI Recommendation';
+}
+
+export interface AIConversation {
+  id: string;
+  userId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StandardSourceRef {
+  isNumber: string;
+  title: string;
+  status: 'Verified from database' | 'Requires verification' | 'AI Recommendation';
+}
+
+export interface ProcurementSpecDraft {
+  product: string;
+  intendedUse: string;
+  quantity?: string;
+  requiredPerformance?: string;
+  applicationIndustry?: string;
+  productDescription: string;
+  recommendedStandards: Array<{ isNumber: string; title: string; applicability: string }>;
+  technicalParameters: string[];
+  testingRequirements: string[];
+  qualityRequirements: string[];
+  complianceRequirements: string[];
+  disclaimer: string;
+}
+
+export interface AIMessage {
+  id: string;
+  conversationId: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  createdAt: string;
+  followUps?: string[];
+  sources?: StandardSourceRef[];
+  verificationStatus?: 'Verified from database' | 'Requires verification' | 'AI Recommendation';
+  specificationDraft?: ProcurementSpecDraft;
+}
+
+export interface AIAnalyticsRecord {
+  id: string;
+  timestamp: string;
+  query: string;
+  category: string;
+  requestedStandard?: string;
+  isVerified: boolean;
+  hasError: boolean;
+}
+
+export interface OfflineSyncQueueItem {
+  id: string;
+  timestamp: string;
+  type: 'CREATE' | 'UPDATE' | 'DELETE';
+  entity: 'worker' | 'assessment' | 'selfDeclaration' | 'aiAnalytics' | 'aiMessage';
+  payload: any;
+  status: 'PENDING' | 'SYNCED' | 'FAILED';
+  retryCount: number;
+}
+
+

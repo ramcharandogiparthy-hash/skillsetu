@@ -433,21 +433,28 @@ export const INITIAL_AUDIT_LOGS: AuditLog[] = [
   }
 ];
 
+import { INDIAN_STANDARDS_DATABASE } from './isStandardsData';
+
 export async function seedDatabaseIfEmpty() {
   const count = await db.workers.count();
   if (count === 0) {
     await forceResetSeedData();
   }
+  const standardsCount = await db.isStandards.count();
+  if (standardsCount === 0) {
+    await db.isStandards.bulkAdd(INDIAN_STANDARDS_DATABASE);
+  }
 }
 
 export async function forceResetSeedData() {
-  await db.transaction('rw', [db.workers, db.selfDeclarations, db.assessments, db.aiAnalyses, db.finalResults, db.auditLogs], async () => {
+  await db.transaction('rw', [db.workers, db.selfDeclarations, db.assessments, db.aiAnalyses, db.finalResults, db.auditLogs, db.isStandards], async () => {
     await db.workers.clear();
     await db.selfDeclarations.clear();
     await db.assessments.clear();
     await db.aiAnalyses.clear();
     await db.finalResults.clear();
     await db.auditLogs.clear();
+    await db.isStandards.clear();
 
     await db.workers.bulkAdd(INITIAL_WORKERS);
     await db.selfDeclarations.bulkAdd(INITIAL_SELF_DECLARATIONS);
@@ -455,5 +462,7 @@ export async function forceResetSeedData() {
     await db.aiAnalyses.bulkAdd(INITIAL_AI_ANALYSES);
     await db.finalResults.bulkAdd(INITIAL_FINAL_RESULTS);
     await db.auditLogs.bulkAdd(INITIAL_AUDIT_LOGS);
+    await db.isStandards.bulkAdd(INDIAN_STANDARDS_DATABASE);
   });
 }
+

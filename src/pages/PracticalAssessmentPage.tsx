@@ -99,7 +99,7 @@ export const PracticalAssessmentPage: React.FC = () => {
       timestamp: new Date().toISOString()
     };
     setEvidenceList((prev) => [...prev, newEv]);
-    showToast('Evidence Uploaded', `${type === 'photo' ? 'Photo' : 'Video'} captured and saved locally.`, 'success');
+    showToast('Evidence Uploaded', `${type === 'photo' ? 'Photo' : 'Video'} captured and saved locally in IndexedDB.`, 'success');
   };
 
   const removeEvidence = (id: string) => {
@@ -154,33 +154,33 @@ export const PracticalAssessmentPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
       {/* Header Card */}
-      <div className="bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800 space-y-4">
+      <div className="bg-gradient-to-r from-[#12355B] via-[#0f2a4a] to-[#081728] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-blue-900 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
-              <ClipboardCheck className="w-4 h-4 text-blue-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/30">
+              <ClipboardCheck className="w-4 h-4 text-teal-300" />
               <span>Standardized Practical Task Checklist</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
               Practical Competency Evaluation
             </h1>
-            <p className="text-xs text-slate-300 mt-1">
+            <p className="text-xs text-slate-200 mt-1 font-medium">
               Candidate: <strong>{worker?.fullName || 'Ravi Kumar'}</strong> | Trade: <strong>Assistant Electrician</strong>
             </p>
           </div>
 
-          <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-center min-w-[150px]">
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Practical Score</p>
-            <p className="text-3xl font-extrabold text-emerald-400">{currentTotalScore} <span className="text-sm text-slate-400 font-normal">/ 100</span></p>
-            <p className="text-[10px] text-emerald-300 font-semibold mt-0.5">8 Criteria Evaluated</p>
+          <div className="bg-blue-950/80 p-4 rounded-2xl border border-blue-800 text-center min-w-[150px] shadow-inner">
+            <p className="text-[10px] text-blue-300 font-bold uppercase tracking-wider">Practical Score</p>
+            <p className="text-3xl font-black text-amber-400">{currentTotalScore} <span className="text-sm text-slate-300 font-bold">/ 100</span></p>
+            <p className="text-[10px] text-teal-300 font-bold mt-0.5">8 Criteria Evaluated</p>
           </div>
         </div>
 
         {/* Task Objective Statement */}
-        <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-slate-200">
-          <strong className="text-blue-400">Assigned Task:</strong> Install and test a basic single-phase switchboard containing one ON/OFF wall switch and one batten bulb holder with safety insulation.
+        <div className="p-4 rounded-2xl bg-blue-950/90 border border-blue-800 text-xs text-slate-200 font-medium">
+          <strong className="text-teal-300">Assigned Practical Task:</strong> Install and test a basic single-phase switchboard containing one ON/OFF wall switch and one batten bulb holder with safety insulation.
         </div>
       </div>
 
@@ -194,10 +194,10 @@ export const PracticalAssessmentPage: React.FC = () => {
           const calculatedScore = calculateCriterionScore(criterion.maxScore, currentLevel);
 
           return (
-            <div key={criterion.id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div key={criterion.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-slate-900 text-white font-extrabold flex items-center justify-center text-xs">
+                  <div className="w-8 h-8 rounded-xl bg-[#12355B] text-white font-extrabold flex items-center justify-center text-xs shrink-0">
                     {idx + 1}
                   </div>
                   <div>
@@ -208,21 +208,21 @@ export const PracticalAssessmentPage: React.FC = () => {
 
                 <div className="text-right">
                   <span className="text-xs font-bold text-slate-400">Item Score:</span>
-                  <span className="ml-2 text-lg font-extrabold text-blue-600">
+                  <span className="ml-2 text-lg font-black text-[#12355B]">
                     {calculatedScore} / {criterion.maxScore} pts
                   </span>
                 </div>
               </div>
 
-              {/* 3 Option Buttons */}
+              {/* 3 Level Options Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   type="button"
                   onClick={() => handleLevelChange(criterion.id, 'not_demonstrated')}
-                  className={`p-3 rounded-xl border text-left transition ${
+                  className={`p-3.5 rounded-2xl border text-left transition cursor-pointer focus-visible:ring-2 focus-visible:ring-[#12355B] ${
                     currentLevel === 'not_demonstrated'
                       ? 'bg-rose-50 border-rose-600 ring-2 ring-rose-600/30 text-rose-950 font-bold'
-                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 font-medium'
                   }`}
                 >
                   <p className="text-xs font-bold">Not Demonstrated</p>
@@ -232,10 +232,10 @@ export const PracticalAssessmentPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleLevelChange(criterion.id, 'needs_support')}
-                  className={`p-3 rounded-xl border text-left transition ${
+                  className={`p-3.5 rounded-2xl border text-left transition cursor-pointer focus-visible:ring-2 focus-visible:ring-[#12355B] ${
                     currentLevel === 'needs_support'
                       ? 'bg-amber-50 border-amber-600 ring-2 ring-amber-600/30 text-amber-950 font-bold'
-                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 font-medium'
                   }`}
                 >
                   <p className="text-xs font-bold">Needs Support</p>
@@ -245,10 +245,10 @@ export const PracticalAssessmentPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleLevelChange(criterion.id, 'demonstrated_independently')}
-                  className={`p-3 rounded-xl border text-left transition ${
+                  className={`p-3.5 rounded-2xl border text-left transition cursor-pointer focus-visible:ring-2 focus-visible:ring-[#12355B] ${
                     currentLevel === 'demonstrated_independently'
-                      ? 'bg-emerald-50 border-emerald-600 ring-2 ring-emerald-600/30 text-emerald-950 font-bold'
-                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                      ? 'bg-teal-50 border-[#0F766E] ring-2 ring-[#0F766E]/30 text-teal-950 font-bold'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 font-medium'
                   }`}
                 >
                   <p className="text-xs font-bold">Demonstrated Independently</p>
@@ -263,7 +263,7 @@ export const PracticalAssessmentPage: React.FC = () => {
                   placeholder={`Assessor observation comments for ${criterion.title}...`}
                   value={comments[criterion.id] || ''}
                   onChange={(e) => handleCommentChange(criterion.id, e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:ring-2 focus:ring-[#12355B] focus:outline-none bg-slate-50 font-medium"
                 />
               </div>
             </div>
@@ -272,14 +272,14 @@ export const PracticalAssessmentPage: React.FC = () => {
       </div>
 
       {/* Photo / Video Evidence Upload Section */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-              <Camera className="w-5 h-5 text-blue-600" />
+              <Camera className="w-5 h-5 text-[#12355B]" />
               <span>Practical Assessment Evidence Capture</span>
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 font-medium mt-0.5">
               Upload or capture photos/videos of tool handling, safety gloves, and live testing.
             </p>
           </div>
@@ -288,18 +288,18 @@ export const PracticalAssessmentPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleSimulateEvidenceUpload('photo')}
-              className="px-3 py-2 rounded-xl bg-slate-800 text-white hover:bg-slate-700 text-xs font-semibold flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 rounded-xl bg-[#12355B] text-white hover:bg-[#1a4877] text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
             >
-              <Camera className="w-4 h-4 text-blue-400" />
+              <Camera className="w-4 h-4 text-blue-300" />
               <span>Capture Photo</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleSimulateEvidenceUpload('video')}
-              className="px-3 py-2 rounded-xl bg-slate-800 text-white hover:bg-slate-700 text-xs font-semibold flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 rounded-xl bg-[#12355B] text-white hover:bg-[#1a4877] text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
             >
-              <Video className="w-4 h-4 text-rose-400" />
+              <Video className="w-4 h-4 text-rose-300" />
               <span>Record Video</span>
             </button>
           </div>
@@ -308,61 +308,62 @@ export const PracticalAssessmentPage: React.FC = () => {
         {/* Evidence Thumbnails Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {evidenceList.map((ev) => (
-            <div key={ev.id} className="relative rounded-2xl overflow-hidden border border-slate-200 group bg-slate-900 text-white">
-              <img src={ev.url} alt={ev.title} className="w-full h-36 object-cover opacity-80 group-hover:opacity-100 transition" />
-              <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-900/80 text-[10px] font-bold text-blue-300 uppercase flex items-center gap-1">
+            <div key={ev.id} className="relative rounded-2xl overflow-hidden border border-slate-200 group bg-slate-900 text-white shadow-xs">
+              <img src={ev.url} alt={ev.title} className="w-full h-36 object-cover opacity-85 group-hover:opacity-100 transition" />
+              <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-900/90 text-[10px] font-bold text-teal-300 uppercase flex items-center gap-1">
                 {ev.type === 'photo' ? <Camera className="w-3 h-3" /> : <Video className="w-3 h-3 text-rose-400" />}
                 <span>{ev.type}</span>
               </div>
               <button
                 onClick={() => removeEvidence(ev.id)}
-                className="absolute top-2 right-2 p-1 rounded bg-rose-600 text-white hover:bg-rose-700 transition"
+                className="absolute top-2 right-2 p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 transition cursor-pointer"
+                title="Remove evidence item"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
               <div className="p-3 bg-slate-900 text-xs">
                 <p className="font-bold text-white truncate">{ev.title}</p>
-                <p className="text-[10px] text-slate-400 mt-0.5">Saved to IndexedDB</p>
+                <p className="text-[10px] text-slate-400 font-medium mt-0.5">Saved in IndexedDB</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Evidence Complete Checkbox */}
-        <label className="flex items-center gap-3 p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 cursor-pointer">
+        <label className="flex items-center gap-3 p-4 rounded-2xl border border-teal-200 bg-teal-50/60 cursor-pointer">
           <input
             type="checkbox"
             checked={evidenceComplete}
             onChange={(e) => setEvidenceComplete(e.target.checked)}
-            className="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500"
+            className="w-5 h-5 rounded text-[#0F766E] focus:ring-[#0F766E]"
           />
-          <span className="text-xs font-bold text-emerald-950">
+          <span className="text-xs font-bold text-teal-950">
             Confirm all required practical photo & video evidence items are captured and ready for AI analysis.
           </span>
         </label>
       </div>
 
-      {/* Save & Continue Bar */}
-      <div className="sticky bottom-4 bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl border border-slate-800 shadow-2xl flex flex-wrap items-center justify-between gap-4">
+      {/* Save & Continue Sticky Bar */}
+      <div className="sticky bottom-4 bg-[#12355B] text-white p-4 rounded-2xl border border-blue-900 shadow-2xl flex flex-wrap items-center justify-between gap-4 no-print">
         <div>
-          <p className="text-xs text-slate-300">Practical Assessment Score:</p>
-          <p className="text-xl font-extrabold text-emerald-400">{currentTotalScore} / 100 Marks</p>
+          <p className="text-[11px] text-blue-200 font-medium">Practical Assessment Score:</p>
+          <p className="text-xl font-extrabold text-amber-400">{currentTotalScore} / 100 Marks</p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => saveAssessmentToDb('draft')}
-            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-blue-900/80 hover:bg-blue-800 text-blue-100 border border-blue-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
           >
-            <Save className="w-4 h-4 text-slate-400" />
+            <Save className="w-4 h-4 text-blue-300" />
             <span>Save Draft</span>
           </button>
 
           <button
             type="button"
             onClick={handleContinueToAI}
-            className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition flex items-center gap-2"
+            className="px-6 py-2.5 rounded-xl bg-[#0F766E] hover:bg-teal-600 text-white font-bold text-xs shadow-md transition flex items-center gap-2 cursor-pointer"
           >
             <span>Continue to AI Evidence Review</span>
             <ArrowRight className="w-4 h-4" />
